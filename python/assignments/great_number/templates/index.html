@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Welcome to the Great Number Game</h1>
+    <h5>I am thinking a number between 1 and 100</h5>
+    
+    <form class="guess_form" action="/guess", method="post">
+        <label for="guess_number">Take a GUESS</label>
+        <input type="text" name="guess_number">
+        <input type="submit" value="Guess">
+    </form>
+    {% if 'guess_number' in session %}
+        <form action="/reset">
+            <input type="submit" value="RESET">
+        </form>
+    {% endif %}
+    {% if session['attempt'] < 5 %}
+        {% if 'guess_number' in session %}
+            <h4>YOUR NUMBER: {{session['guess_number']}}</h4>
+            <H5>ATTEMPT : {{session['attempt']}}/5</H5>
+            {% if 'number' in session: %}
+                {% if session['number'] == session['guess_number'] %}
+                    <div class="correct">
+                        <h3>CORRECT!</h3>
+                    </div>
+                {% elif session['number'] > session['guess_number'] %}
+                <div class="number_low">
+                        <h3>LOW!</h3>
+                </div>
+                {% else %}
+                    <div class="number_high">
+                        <h3>HIGH!</h3>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% else %}
+        <div class="failed">
+            <h1>WASTED</h1>
+        </div>
+    {% endif %}
+</body>
+</html>
